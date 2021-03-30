@@ -7,7 +7,7 @@ import os
 from util import *
 
 
-def cell_seg_main(data_folder, model_name, format):
+def cell_seg_main(data_folder, model_name, format, output_folder):
     patch_size = 128
     stride = 16
     file_path = os.path.join(os.getcwd(), data_folder)
@@ -24,7 +24,7 @@ def cell_seg_main(data_folder, model_name, format):
         temp_path = os.path.join(file_path, temp_name)
         if not os.path.isdir(temp_path):
             continue
-        # result_path=os.path.join(temp_path, 'mask.png')
+
         temp_image = cv2.imread(os.path.join(temp_path, temp_name + format))
         if temp_image is None:
             raise AssertionError(temp_path, ' not found')
@@ -37,8 +37,13 @@ def cell_seg_main(data_folder, model_name, format):
         c_mask[c_mask < thr] = 0
         c_mask[c_mask >= thr] = 1
         center_edge_mask, gray_map = center_edge(c_mask, temp_image)
-        cv2.imwrite(os.path.join(temp_path, 'mask.png'), gray_map)
-        cv2.imwrite(os.path.join(temp_path, 'label.png'), center_edge_mask)
+
+        result_dir = os.path.join(output_folder, temp_name)
+        if not os.path.exists(result_dir):
+            os.mkdir(result_dir)
+
+        cv2.imwrite(os.path.join(result_dir, 'mask.png'), gray_map)
+        cv2.imwrite(os.path.join(result_dir, 'label.png'), center_edge_mask)
         te = time()
         print('Time cost: ', str(te - ts))
 

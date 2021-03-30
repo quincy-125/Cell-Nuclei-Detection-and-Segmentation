@@ -14,6 +14,12 @@ def make_arg_parser():
                         required=True,
                         help='the path to the input image data folder')
 
+    parser.add_argument('-o', '--output_dir',
+                        type=str,
+                        default='data',
+                        required=True,
+                        help='the path to the output folder')
+
     parser.add_argument('-m', '--loaded_model_name',
                         type=str,
                         default='nucles_model_v3.meta',
@@ -43,4 +49,5 @@ def main():
 
     cell_seg_main(data_folder=args.input_data_dir,
                   model_name=args.loaded_model_name,
-                  format=args.img_format)
+                  format=args.img_format,
+                  output_folder=args.output_dir)
