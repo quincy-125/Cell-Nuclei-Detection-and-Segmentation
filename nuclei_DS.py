@@ -4,6 +4,7 @@ detect and segement potential nuclei in miscropic images (H&E stained)
 '''
 import os
 
+from Cell_Seg_Coord.shapely_coord import shapely_process
 from util import *
 
 
@@ -50,3 +51,24 @@ def cell_seg_main(data_folder, model_name, format, output_folder):
     model.close_sess()
     print('mask generation done')
     print_ctime()
+
+
+def process(no_warn_op, data_folder, model_name, format, output_folder, is_seg, is_pickle, is_load, mask_img_dir,
+            coord_save_dir, coord_file_name):
+    warn_shut_up(no_warn_op=no_warn_op)
+
+    str_bool_dic = str_to_bool()
+
+    is_seg = str_bool_dic[is_seg]
+
+    if is_seg:
+        cell_seg_main(data_folder=data_folder,
+                      model_name=model_name,
+                      format=format,
+                      output_folder=output_folder)
+
+    shapely_process(is_pickle=is_pickle,
+                    is_load=is_load,
+                    mask_img_dir=mask_img_dir,
+                    coord_save_dir=coord_save_dir,
+                    coord_file_name=coord_file_name)

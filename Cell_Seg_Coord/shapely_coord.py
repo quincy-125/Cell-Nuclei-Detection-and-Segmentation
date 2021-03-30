@@ -7,13 +7,14 @@ import cv2
 import numpy as np
 from shapely.geometry import MultiPolygon, Polygon
 
+from util import str_to_bool
+
 
 def mask_to_polygons(mask, epsilon=10., min_area=10.):
     """Convert a mask ndarray (binarized image) to Multipolygons"""
     # first, find contours with cv2: it's much faster than shapely
-    contours, hierarchy = cv2.findContours(mask,
-                                           cv2.RETR_CCOMP,
-                                           cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+
     if not contours:
         return MultiPolygon()
     # now messy stuff to associate parent and child contours
@@ -145,3 +146,19 @@ def load_seg_coord(coord_save_dir, coord_file_name):
     coords_lists = pickle.load(coord_file)
 
     return coords_lists
+
+
+def shapely_process(is_pickle, is_load, mask_img_dir, coord_save_dir, coord_file_name):
+    str_bool_dic = str_to_bool()
+
+    is_pickle = str_bool_dic[is_pickle]
+    is_load = str_bool_dic[is_load]
+
+    if is_pickle:
+        cell_nuclei_seg_store(mask_img_dir=mask_img_dir,
+                              coord_save_dir=coord_save_dir,
+                              coord_file_name=coord_file_name)
+
+        if is_load:
+            load_seg_coord(coord_save_dir=coord_save_dir,
+                           coord_file_name=coord_file_name)
