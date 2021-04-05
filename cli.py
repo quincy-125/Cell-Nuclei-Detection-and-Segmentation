@@ -73,6 +73,10 @@ def make_arg_parser():
 
 
 def main():
+    """
+
+    :return:
+    """
     parser = make_arg_parser()
     args = parser.parse_args()
 

@@ -110,13 +110,11 @@ def image2patch(in_image, patch_size, stride, blur=False, f_size=9):
 
 
 def list2batch(patches):
-    '''
-	covert patch to flat batch
-	args:
-		patches: list
-	return:
-		batch: numpy array
-	'''
+    """
+
+    :param patches:
+    :return:
+    """
     patch_shape = list(patches[0].shape)
 
     batch_size = len(patches)

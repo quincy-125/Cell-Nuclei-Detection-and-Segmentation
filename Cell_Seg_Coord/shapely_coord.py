@@ -11,7 +11,13 @@ from util import str_to_bool
 
 
 def mask_to_polygons(mask, epsilon=10., min_area=10.):
-    """Convert a mask ndarray (binarized image) to Multipolygons"""
+    """
+
+    :param mask: gray scale version of the original RGB channel images
+    :param epsilon:
+    :param min_area: minimal area values considered as a polygon
+    :return:
+    """
     # first, find contours with cv2: it's much faster than shapely
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
 
@@ -42,8 +48,12 @@ def mask_to_polygons(mask, epsilon=10., min_area=10.):
 
 
 def mask_for_polygons(polygons, im_size):
-    """Convert a polygon or multipolygon list back to
-       an image mask ndarray"""
+    """
+
+    :param polygons:
+    :param im_size:
+    :return:
+    """
     img_mask = np.zeros(im_size, np.uint8)
     if not polygons:
         return img_mask
@@ -58,6 +68,11 @@ def mask_for_polygons(polygons, im_size):
 
 
 def polygon_obj(img_out_dir):
+    """
+
+    :param img_out_dir:
+    :return: list of polygon objects
+    """
     img = cv2.imread(os.path.join(img_out_dir, 'mask.png'), cv2.IMREAD_UNCHANGED)
     gray_img = cv2.convertScaleAbs(img)
 
@@ -72,6 +87,11 @@ def polygon_obj(img_out_dir):
 
 
 def polygon_coord(img_out_dir):
+    """
+
+    :param img_out_dir:
+    :return: list of coordinates from the polygon objects
+    """
     polygons = polygon_obj(img_out_dir)
 
     polygon_exterior_coords = list()
@@ -84,6 +104,11 @@ def polygon_coord(img_out_dir):
 
 
 def nuclei_coord(img_out_dir):
+    """
+
+    :param img_out_dir:
+    :return: list of coordinates of the nuclei
+    """
     polygon_exterior_coords = polygon_coord(img_out_dir)
 
     nuclei_coords = list()
@@ -107,6 +132,11 @@ def nuclei_coord(img_out_dir):
 
 
 def cell_nuclei_coord_store(img_out_dir):
+    """
+
+    :param img_out_dir:
+    :return: python dictionary saved the image names with the corresponding cell and nuclei coordinates list
+    """
     polygon_exterior_coords = polygon_coord(img_out_dir)
     nuclei_coords = nuclei_coord(img_out_dir)
 
@@ -118,6 +148,13 @@ def cell_nuclei_coord_store(img_out_dir):
 
 
 def cell_nuclei_seg_store(mask_img_dir, coord_save_dir, coord_file_name):
+    """
+
+    :param mask_img_dir:
+    :param coord_save_dir:
+    :param coord_file_name:
+    :return: save the cell and nuclei coordinates from a sequence of images into a pickle object
+    """
     mask_img_names = os.listdir(mask_img_dir)
 
     cell_nuclei_seg_coords = list()
@@ -139,6 +176,12 @@ def cell_nuclei_seg_store(mask_img_dir, coord_save_dir, coord_file_name):
 
 
 def load_seg_coord(coord_save_dir, coord_file_name):
+    """
+
+    :param coord_save_dir:
+    :param coord_file_name:
+    :return: coordinates of cell and nuclei loaded from the saved pickle file
+    """
     full_coord_file_dir = os.path.join(coord_save_dir, coord_file_name)
 
     coord_file = open(full_coord_file_dir, 'rb')
@@ -149,6 +192,15 @@ def load_seg_coord(coord_save_dir, coord_file_name):
 
 
 def shapely_process(is_pickle, is_load, mask_img_dir, coord_save_dir, coord_file_name):
+    """
+
+    :param is_pickle:
+    :param is_load:
+    :param mask_img_dir:
+    :param coord_save_dir:
+    :param coord_file_name:
+    :return:
+    """
     str_bool_dic = str_to_bool()
 
     is_pickle = str_bool_dic[is_pickle]

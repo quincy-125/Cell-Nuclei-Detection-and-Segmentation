@@ -9,6 +9,14 @@ from util import *
 
 
 def cell_seg_main(data_folder, model_name, format, output_folder):
+    """
+
+    :param data_folder:
+    :param model_name:
+    :param format:
+    :param output_folder:
+    :return:
+    """
     patch_size = 128
     stride = 16
     file_path = os.path.join(os.getcwd(), data_folder)
@@ -55,6 +63,21 @@ def cell_seg_main(data_folder, model_name, format, output_folder):
 
 def process(no_warn_op, data_folder, model_name, format, output_folder, is_seg, is_pickle, is_load, mask_img_dir,
             coord_save_dir, coord_file_name):
+    """
+
+    :param no_warn_op:
+    :param data_folder:
+    :param model_name:
+    :param format:
+    :param output_folder:
+    :param is_seg:
+    :param is_pickle:
+    :param is_load:
+    :param mask_img_dir:
+    :param coord_save_dir:
+    :param coord_file_name:
+    :return:
+    """
     warn_shut_up(no_warn_op=no_warn_op)
 
     str_bool_dic = str_to_bool()
