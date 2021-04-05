@@ -2,9 +2,9 @@ dir=/Users/m216613
 input_dir=$dir/Downloads/data
 output_dir=$dir/Downloads/results
 coord_dir=$dir/Downloads/file
-is_seg='False'
+is_seg='True'
 is_pickle='True'
-is_load='False'
+is_load='True'
 coord_name='cell_nuclei_seg_coord.pkl'
 code_dir=$dir/PycharmProjects/Cell-Nuclei-Detection-and-Segmentation/
 cd $code_dir
