@@ -3,9 +3,28 @@ detect and segement potential nuclei in miscropic images (H&E stained)
 @author: Kemeng Chen 
 '''
 import os
+import PIL
 
 from Cell_Seg_Coord.shapely_coord import shapely_process
 from util import *
+
+
+def read_img_from_np(data_folder, img_arrays_path):
+    """
+
+    :param data_folder:
+    :param img_arrays_path: path to the list of input np arrays of the image patches
+    :return:
+    """
+    for i in os.listdir(img_arrays_path):
+        img_arrays = os.path.join(img_arrays_path, i)
+
+        for j in range(len(img_arrays)):
+            sample_dir = os.path.join(os.path.join(data_folder, 'Sample_', str(j)))
+            if not os.path.exists(sample_dir):
+                os.mkdir(sample_dir)
+            sample = PIL.Image.fromarray(img_arrays[j])
+            sample.save(os.path.join(sample_dir, 'sample_' + str(j) + '.png'))
 
 
 def cell_seg_main(data_folder, model_name, format, output_folder):
@@ -61,10 +80,12 @@ def cell_seg_main(data_folder, model_name, format, output_folder):
     print_ctime()
 
 
-def process(no_warn_op, data_folder, model_name, format, output_folder, is_seg, is_pickle, is_load, mask_img_dir,
-            coord_save_dir, coord_file_name):
+def process(is_img_np, img_arrays_dir, no_warn_op, data_folder, model_name, format, output_folder,
+            is_seg, is_pickle, is_load, mask_img_dir, coord_save_dir, coord_file_name):
     """
 
+    :param img_arrays_dir:
+    :param is_img_np: if the input image in numpy array format
     :param no_warn_op:
     :param data_folder:
     :param model_name:
@@ -85,6 +106,10 @@ def process(no_warn_op, data_folder, model_name, format, output_folder, is_seg, 
     is_seg = str_bool_dic[is_seg]
 
     if is_seg:
+        if is_img_np:
+            read_img_from_np(data_folder=data_folder,
+                             img_arrays_path=img_arrays_dir)
+
         cell_seg_main(data_folder=data_folder,
                       model_name=model_name,
                       format=format,

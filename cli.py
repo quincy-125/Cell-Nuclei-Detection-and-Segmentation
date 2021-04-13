@@ -9,6 +9,10 @@ def make_arg_parser():
     parser = argparse.ArgumentParser(description='nuclei segmentation command line arguments description',
                                      epilog='epilog')
 
+    parser.add_argument('-a', '--img_arrays_dir',
+                        required=False,
+                        help='path to input query image patches in np, which is path to a list of np arrays')
+
     parser.add_argument('-i', '--input_data_dir',
                         type=str,
                         default='data',
@@ -63,6 +67,12 @@ def make_arg_parser():
                         required=True,
                         help='whether or not load the pickle object to return the coordinate lists')
 
+    parser.add_argument('-n', '--is_img_np',
+                        type=str,
+                        default='True',
+                        required=False,
+                        help='whether or not the input query image patches in numpy array format')
+
     parser.add_argument('-w', '--no_warn_op',
                         type=str,
                         default='True',
@@ -80,7 +90,9 @@ def main():
     parser = make_arg_parser()
     args = parser.parse_args()
 
-    process(no_warn_op=args.no_warn_op,
+    process(is_img_np=args.is_img_np,
+            img_arrays_dir=args.img_arrays_dir,
+            no_warn_op=args.no_warn_op,
             data_folder=args.input_data_dir,
             model_name=args.loaded_model_name,
             format=args.img_format,
