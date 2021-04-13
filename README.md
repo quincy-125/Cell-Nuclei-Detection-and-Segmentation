@@ -3,7 +3,15 @@ Detecting the location and draw boundary of nuclei from tissue microscopic image
 Model is based on U-net with contour enhancement in loss function. Overlap patch based strategy is used to 1) adapt to variant input image size (resize image may stretch features); 2) use random clip and rotation for data augmentation; 3) each region in output mask is determined by combining inference result from multiple patches. More details can be found in [1].
 ![sample_1](screenshots/screenshots_3.png)
 ![sample_2](screenshots/screenshot_2.png)
- 
+
+### Input
+- Option#1 Path to the list of query patches in numpy array format
+- Option#2 Path to the list of png format query image patches
+
+### Output
+- Pickle object for a list of dictionaries
+- Dictionary has three keys: Image patch name, cell coordinates, and nuclei coordinate
+
 ### Dependencies
 - Tensorflow
 - OpenCV
